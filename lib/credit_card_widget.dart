@@ -228,6 +228,7 @@ class _CreditCardWidgetState extends State<CreditCardWidget>
   /// Card number, Exp. year and Card holder name
   ///
   Widget _buildFrontContainer() {
+    final double devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
     final TextStyle defaultTextStyle =
         Theme.of(context).textTheme.headline6!.merge(
               const TextStyle(
@@ -306,37 +307,73 @@ class _CreditCardWidgetState extends State<CreditCardWidget>
           Expanded(
             child: Padding(
               padding: const EdgeInsets.only(left: 16),
-              child: Text(
-                widget.cardNumber.isEmpty ? 'XXXX XXXX XXXX XXXX' : number,
-                style: widget.textStyle ?? defaultTextStyle,
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 16),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    'VALID\nTHRU',
-                    style: widget.textStyle ??
-                        defaultTextStyle.copyWith(fontSize: 7),
-                    textAlign: TextAlign.center,
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: Text(
+                      widget.cardNumber.isEmpty
+                          ? 'XXXX XXXX XXXX XXXX'
+                          : number,
+                      style: widget.textStyle ?? defaultTextStyle,
+                    ),
                   ),
-                  const SizedBox(width: 5),
-                  Text(
-                    widget.expiryDate.isEmpty
-                        ? widget.labelExpiredDate
-                        : widget.expiryDate,
-                    style: widget.textStyle ?? defaultTextStyle,
-                  ),
+                  if (MediaQuery.of(context).size.height < 356)
+                    Expanded(
+                      flex: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 16),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              'VALID\nTHRU',
+                              style: widget.textStyle ??
+                                  defaultTextStyle.copyWith(fontSize: 7),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(width: 5),
+                            Text(
+                              widget.expiryDate.isEmpty
+                                  ? widget.labelExpiredDate
+                                  : widget.expiryDate,
+                              style: widget.textStyle ?? defaultTextStyle,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),
           ),
+          if (MediaQuery.of(context).size.height > 356)
+            Expanded(
+              flex: 1,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      'VALID\nTHRU',
+                      style: widget.textStyle ??
+                          defaultTextStyle.copyWith(fontSize: 7),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(width: 5),
+                    Text(
+                      widget.expiryDate.isEmpty
+                          ? widget.labelExpiredDate
+                          : widget.expiryDate,
+                      style: widget.textStyle ?? defaultTextStyle,
+                    ),
+                  ],
+                ),
+              ),
+            ),
           Visibility(
             visible: widget.isHolderNameVisible,
             child: Expanded(
